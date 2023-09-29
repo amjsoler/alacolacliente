@@ -21,7 +21,9 @@
             }
         },
         methods: {
-            ...mapActions(["buscarEstablecimientos"])
+            ...mapActions({
+                buscarEstablecimientos: "establecimientos/buscarEstablecimientos"
+            })
         }
     }
 </script>
