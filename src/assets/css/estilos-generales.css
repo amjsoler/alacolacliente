@@ -1,0 +1,80 @@
+.btn-primary {
+    background: rgb(253,137,86) !important;
+    background: linear-gradient(90deg, rgb(253, 137, 76) 0%, rgba(252,183,132,1) 100%) !important;
+    color: #FFFFFF !important;
+    border-radius: 25px;
+    border: none !important;
+}
+
+.btn-secondary {
+    background: #2A7AB0 !important;
+    color: #FFFFFF !important;
+    border-radius: 25px;
+    border: none !important;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+input[type="file"]:focus,
+.uneditable-input:focus {
+    border-color: rgba(253,137,86, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(253,137,86, 0.6);
+    outline: 0 none;
+}
+
+.max-height-textarea {
+    max-height: 200px;
+}
+
+.navbar {
+    height: 50px;
+}
+.navbar a {
+    flex: 1 1 0px;
+}
+
+.fuente-menu{
+    font-size: 0.8em;
+    top: -10px;
+    position: relative;
+}
+.icono {
+    font-size: 1.4em;
+}
+
+nav.navbar {
+    padding-bottom: 0px !important;
+}
+
+.router-link-active {
+    color: #DA7540 !important;
+}
+
+.girando {
+    animation-name: spin;
+    animation-duration: 1500ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
