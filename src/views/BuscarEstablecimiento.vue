@@ -3,7 +3,7 @@
         <div class="flex-fill">
             <input v-model="busqueda" type="text" class="form-control">
         </div>
-        <button @click.prevent="realizarBusqueda" class="btn btn-primary ms-3">
+        <button @click.prevent="buscarEstablecimientos(busqueda)" class="btn btn-primary ms-3">
             <span class="material-symbols-outlined icono">search</span>
         </button>
     </form>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import axios from "axios";
+    import {mapActions} from "vuex";
 
     export default {
         name: "BuscarEstablecimiento",
@@ -21,16 +21,7 @@
             }
         },
         methods: {
-            realizarBusqueda: function () {
-                axios.get(
-                    "http://localhost:8000/api/buscar-establecimientos",
-                    {
-                        params: {
-                            "busqueda": this.busqueda
-                        }
-                    }
-                )
-            }
+            ...mapActions(["buscarEstablecimientos"])
         }
     }
 </script>
