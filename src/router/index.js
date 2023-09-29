@@ -4,12 +4,18 @@ import BuscarEstablecimiento from "@/views/BuscarEstablecimiento.vue";
 import MisEstablecimientos from "@/views/MisEstablecimientos.vue";
 import CuentaUsuario from "@/views/CuentaUsuario.vue";
 import LectorQR from "@/views/LectorQR.vue";
+import VerEstablecimiento from "@/views/VerEstablecimiento.vue";
 
 const routes = [
   {
     path: '/',
     name: 'BuscarEstablecimiento',
     component: BuscarEstablecimiento
+  },
+  {
+    path: '/establecimientos/:id',
+    name: 'VerEstablecimiento',
+    component: VerEstablecimiento
   },
   {
     path: '/mis-establecimientos',
