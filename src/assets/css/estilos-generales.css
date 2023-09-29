@@ -41,18 +41,21 @@ input[type="file"]:focus,
 
 .navbar {
     height: 50px;
+    padding-top: 2px;
 }
 .navbar a {
     flex: 1 1 0px;
+    height: 100%;
 }
 
 .fuente-menu{
     font-size: 0.8em;
-    top: -10px;
     position: relative;
+    top: -5px;
 }
 .icono {
-    font-size: 1.4em;
+    font-size: 1.8em;
+    vertical-align: bottom;
 }
 
 nav.navbar {
