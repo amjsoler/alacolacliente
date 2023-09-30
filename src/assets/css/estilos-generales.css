@@ -1,3 +1,7 @@
+html, body, .container {
+    height: 100%;
+}
+
 .btn-primary {
     background: rgb(253,137,86) !important;
     background: linear-gradient(90deg, rgb(253, 137, 76) 0%, rgba(252,183,132,1) 100%) !important;
