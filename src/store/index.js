@@ -4,6 +4,7 @@ import establecimientos from "@/store/establecimientos";
 
 export default createStore({
     state: {
+        tokenAuth: "",
     },
     getters: {},
     mutations: {},
