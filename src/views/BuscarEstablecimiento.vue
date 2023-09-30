@@ -15,6 +15,7 @@
         <div class="card mb-3">
             <div class="g-0 d-flex">
                 <div class="col-4">
+                    <!--TODO-->
                     <img src="http://localhost:8000/storage/noimage.jpg" class="img-fluid rounded-start" alt="logo">
                 </div>
                 <div class="col-8">
@@ -31,10 +32,6 @@
             </div>
         </div>
     </router-link>
-
-    <p v-if="busquedaRealizada != null && busquedaRealizada.length == 0" class="w-100 text-center">
-        No hemos encontrado nada que se parezca
-    </p>
 </template>
 
 <script>

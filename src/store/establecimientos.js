@@ -4,8 +4,8 @@ export default {
     namespaced: true,
 
     state: {
-        busquedaRealizada: null,
-        verEstablecimiento: null,
+        busquedaRealizada: [],
+        verEstablecimiento: {},
     },
     mutations: {
         buscarEstablecimientosMut(state, data) {
@@ -34,7 +34,7 @@ export default {
             }
         },
 
-        async verEstablecimiento({commit, state}, establecimientoID) {
+        verEstablecimiento({commit, state}, establecimientoID) {
             console.log("Entro al ver establecimiento del store");
             var encontrado = false;
 
@@ -63,11 +63,10 @@ export default {
             if(!encontrado){
                 console.log("No encontrado, peticiono a servidor");
                 try {
-                    const data = await axios.get(
+                    axios.get(
                         "http://localhost:8000/api/establecimientos/"+establecimientoID
-                    );
-
-                    commit("verEstablecimientoMut", data.data);
+                    )
+                        .then(response => commit("verEstablecimientoMut", response.data));
                 } catch(error){
                     commit("verEstablecimientoMut", null);
                 }
