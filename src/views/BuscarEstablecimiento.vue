@@ -31,6 +31,10 @@
             </div>
         </div>
     </router-link>
+
+    <p v-if="busquedaRealizada != null && busquedaRealizada.length == 0" class="w-100 text-center">
+        No hemos encontrado nada que se parezca
+    </p>
 </template>
 
 <script>
