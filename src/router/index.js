@@ -69,9 +69,19 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         if (store.state.tokenAuth) {
+            //Si ya hay sesíon prosigo
             next();
         } else {
-            next({name: "IniciarSesion"});
+            //Si no hay sesión en el state, miro si hay token en memoria local
+            if(window.localStorage.getItem("tokenAuth")){
+                store.dispatch(
+                    "almacenarTokenSesion",
+                    window.localStorage.getItem("tokenAuth"));
+
+                next();
+            }else{
+                next({name: "IniciarSesion"});
+            }
         }
     } else {
         if (to.matched.some((record) => record.meta.requiresGuest)) {
