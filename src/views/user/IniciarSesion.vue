@@ -55,14 +55,19 @@ export default {
                     email: this.email,
                     password: this.password
                 }).then(response => {
+                    console.log(response);
                   //Almaceno el token en el root state y después lo almaceno en memoria local
                   this.$store.dispatch("almacenarTokenSesion", response.data.access_token);
 
                   //Una vez tengo el token guardado, redirijo adonde quería ir
-                  router.push(router.currentRoute.value.redirectedFrom);
+                  if(router.currentRoute.value.redirectedFrom){
+                      router.push(router.currentRoute.value.redirectedFrom);
+                  }else{
+                      router.push({name:"CuentaUsuario"});
+                  }
                 })
                     .catch(error => {
-                        console.log(error.response.data);
+                        console.log("por el error");
                         //Si es un error de validación...
                         if(error.response && error.response.data &&
                             error.response.data.errors &&
@@ -72,7 +77,8 @@ export default {
                         }
                         //Si no, muestro un error generico
                         else{
-                          console.log("Error desconocido");
+                            this.errors.email = [];
+                            this.errors.password = ["¿La contraseña es correcta?"];
                         }
                     });
 

@@ -2,12 +2,13 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import BuscarEstablecimiento from "@/views/BuscarEstablecimiento.vue";
 import MisEstablecimientos from "@/views/MisEstablecimientos.vue";
-import CuentaUsuario from "@/views/CuentaUsuario.vue";
+
 import LectorQR from "@/views/LectorQR.vue";
 import VerEstablecimiento from "@/views/VerEstablecimiento.vue";
 import RegistrarUsuario from "@/views/user/RegistrarUsuario.vue";
 import store from "@/store";
 import IniciarSesion from "@/views/user/IniciarSesion.vue";
+import CuentaUsuario from "@/views/user/CuentaUsuario.vue";
 
 const routes = [
     {
@@ -68,7 +69,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (store.state.tokenAuth) {
+        if (store.state.tokenAuth && window.localStorage.getItem("tokenAuth")) {
             //Si ya hay sesíon prosigo
             next();
         } else {
@@ -80,12 +81,16 @@ router.beforeEach((to, from, next) => {
 
                 next();
             }else{
-                next({name: "IniciarSesion"});
+                if(store.state.tokenAuth){
+                    window.localStorage.setItem("tokenAuth", store.state.tokenAuth);
+                }else{
+                    next({name: "IniciarSesion"});
+                }
             }
         }
     } else {
         if (to.matched.some((record) => record.meta.requiresGuest)) {
-            if (!store.state.tokenAuth) {
+            if (!store.state.tokenAuth && !window.localStorage.getItem("tokenAuth")) {
                 next();
             } else {
                 next({name: "CuentaUsuario"});
