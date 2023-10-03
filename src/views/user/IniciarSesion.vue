@@ -22,6 +22,8 @@
                        <button @click.prevent="iniciarSesion" class="btn btn-primary" type="submit">
                            Iniciar Sesión
                        </button>
+
+                     <router-link :to='{name:"RegistrarUsuario"}'>¿No tienes cuenta? Regístrate</router-link>
                    </div>
                </form>
            </div>
@@ -37,6 +39,7 @@ import router from "@/router";
 
 export default {
     name:"IniciarSesion",
+
     data(){
         return {
             email: "",
