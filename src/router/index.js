@@ -9,6 +9,7 @@ import RegistrarUsuario from "@/views/user/RegistrarUsuario.vue";
 import store from "@/store";
 import IniciarSesion from "@/views/user/IniciarSesion.vue";
 import CuentaUsuario from "@/views/user/CuentaUsuario.vue";
+import EstablecimientosFavoritos from "@/views/establecimientos/EstablecimientosFavoritos.vue";
 
 const routes = [
     {
@@ -29,7 +30,7 @@ const routes = [
     {
         path: '/establecimientos-favoritos',
         name: 'EstablecimientosFavoritos',
-        component: LectorQR
+        component: EstablecimientosFavoritos
     },
     {
         path: '/lector-qr',
