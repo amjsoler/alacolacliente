@@ -1,11 +1,14 @@
 <template>
   {{ usuario }}
+
+  <button class="btn btn-primary" @click.prevent="cerrarSesion">Cerrar Sesión</button>
 </template>
 
 <script>
 
 import store from "@/store";
 import axios from "axios";
+import {mapActions} from "vuex";
 
 export default {
     name:"CuentaUsuario",
@@ -14,6 +17,11 @@ export default {
     return {
       usuario: "",
     }
+  },
+  methods: {
+      ...mapActions({
+        cerrarSesion: "cerrarSesion"
+      }),
   },
   mounted() {
     axios.get(process.env.VUE_APP_API_BASE_URL+"user",{},{
