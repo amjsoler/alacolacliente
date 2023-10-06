@@ -9,7 +9,6 @@
 
   export default {
     name: "App",
-      components: {MenuInferior},
-
+    components: {MenuInferior},
   }
 </script>

@@ -9,16 +9,19 @@ export default {
     },
     mutations: {
         buscarEstablecimientosMut(state, data) {
+            console.log("store/establecimientos.js: almacenando busqueda realizada en el state");
             state.busquedaRealizada = data;
         },
 
         verEstablecimientoMut(state, data) {
+            console.log("store/establecimientos.js: Almacenando el último establecimiento visto en el state");
             state.verEstablecimiento = data;
         }
     },
     actions: {
         async buscarEstablecimientos({commit}, busqueda) {
             try {
+                console.log("store/establecimientos.js: buscarEstablecimiento. Axios get");
                 const data = await axios.get(
                     "http://localhost:8000/api/buscar-establecimientos",
                     {
@@ -30,30 +33,28 @@ export default {
 
                 commit("buscarEstablecimientosMut", data.data);
             } catch (error) {
-                console.log(error);
+                console.log("store/establecimientos.js: Error en el buscarEstablecimientos");
             }
         },
 
         verEstablecimiento({commit, state}, establecimientoID) {
-            console.log("Entro al ver establecimiento del store");
+            console.log("store/establecimientos.js: Entro al ver establecimiento del store");
             var encontrado = false;
 
             //Primero compruebo si el verEstablecimiento tiene un establecimiento y si coincide con el que recibo por param
             if (state.verEstablecimiento && state.verEstablecimiento.id == establecimientoID) {
-                console.log("busco en el state ver establecimiento");
+                console.log("store/establecimientos.js: El último establecimiento visto es el que quiero ver ahora");
                 encontrado = true;
                 //OK, ya puedo pintar en la vista
             }
-            //TODO: Si no, Compruebo si el id a buscar está en el listado de mis establecimientos
-            //TODO: Si no, Compruebo si el id a buscar está en el listado de mis establecimientos favoritos
             //Si no, Compruebo si el id a buscar está en el listado de busqueda realizada
             if (!encontrado && state.busquedaRealizada) {
-                console.log("busco en el busqueda realiaada");
+                console.log("store/establecimientos.js: busco en la última busqueda realiaada");
                 //Busco dentro de la lista de busqueda
                 const establecimiento = state.busquedaRealizada.find(elem => elem.id == establecimientoID);
 
                 if(establecimiento){
-                    console.log("Guardo el de busqueda realizada en ver establecimiento" + establecimiento);
+                    console.log("store/establecimientos.js: Encontrado en la última busqueda realizada, lo almaceno en el verestablecimiento");
                     commit("verEstablecimientoMut", establecimiento);
 
                     encontrado = true;
@@ -61,21 +62,20 @@ export default {
             }
 
             if(!encontrado){
-                console.log("No encontrado, peticiono a servidor");
+                console.log("store/establecimientos.js: No encontrado, peticiono a servidor");
                 try {
                     axios.get(
                         "http://localhost:8000/api/establecimientos/"+establecimientoID
                     )
-                        .then(response => commit("verEstablecimientoMut", response.data));
+                        .then(response => {
+                            console.log("store/establecimientos.js: Petición OK. Almaceno el establecimiento en verestablecimiento");
+                            commit("verEstablecimientoMut", response.data)
+                        });
                 } catch(error){
-                    commit("verEstablecimientoMut", null);
+                    console.log("store/establecimientos.js: Error en la consulta, dejo el verestablecimeinto vacío");
+                    commit("verEstablecimientoMut", {});
                 }
             }
-
-            //Si no lo encuentro, peticiono el ver establecimietno con el id
-            //Si recibo ok 200 con establecimiento lo guardo en el verEstablecimiento y paso a la vista
-            //Si no está en servidor, dejo a null el verEstablecimiento y muestro un no encontradoen la vista
-
         }
     },
 }
