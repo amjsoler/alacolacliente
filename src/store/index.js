@@ -4,6 +4,8 @@ import establecimientos from "@/store/establecimientos";
 import router from "@/router";
 
 export default createStore({
+    strict: true,
+
     state: {
         tokenAuth: "",
     },

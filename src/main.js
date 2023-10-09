@@ -7,11 +7,13 @@ import './assets/css/bootstrap.min.css'
 import './assets/css/googlefonts.css'
 
 import './assets/css/estilos-generales.css'
+//TODO: Ver como minificar todo los recursos
+
 import axios from "axios";
 
 const app = createApp(App).use(store).use(router);
 
-//interceptor de todas las request que incluye el token de auth (Si lo hay), accept y content-type a los headers
+//interceptor de todas las request que se encarga de incluir el token de auth (Si lo hay), accept y content-type a los headers
 axios.interceptors.request.use(function(config){
     config.headers.Accept = "application/json";
     config.headers["Content-Type"] = "application/json";
@@ -49,6 +51,8 @@ axios.interceptors.response.use(response => {
         console.log("main.js: Response error captured. 403. Acción no permitida al user.");
         //TODO: Loguear esto al server por si hay que emprender acciones contra el usuario
     }
+
+    //TODO: Manejar también los 404
 
     return Promise.reject(error)
 });

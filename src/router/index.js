@@ -1,15 +1,16 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import store from "@/store";
 
-import BuscarEstablecimiento from "@/views/BuscarEstablecimiento.vue";
-import MisEstablecimientos from "@/views/MisEstablecimientos.vue";
+import BuscarEstablecimiento from "@/views/establecimientos/BuscarEstablecimiento.vue";
+import MisEstablecimientos from "@/views/establecimientos/MisEstablecimientos.vue";
 import LectorQR from "@/views/LectorQR.vue";
-import VerEstablecimiento from "@/views/VerEstablecimiento.vue";
+import VerEstablecimiento from "@/views/establecimientos/VerEstablecimiento.vue";
 import RegistrarUsuario from "@/views/user/RegistrarUsuario.vue";
 import IniciarSesion from "@/views/user/IniciarSesion.vue";
 import CuentaUsuario from "@/views/user/CuentaUsuario.vue";
 import EstablecimientosFavoritos from "@/views/establecimientos/EstablecimientosFavoritos.vue";
 import AccionNoAutorizada from "@/views/AccionNoAutorizada.vue";
+import RecordarContrasena from "@/views/user/RecordarContrasena.vue";
 
 //Las rutas de la aplicación
 const routes = [
@@ -26,7 +27,10 @@ const routes = [
     {
         path: '/mis-establecimientos',
         name: 'MisEstablecimientos',
-        component: MisEstablecimientos
+        component: MisEstablecimientos,
+        meta: {
+            requiresAuth: true
+        },
     },
     {
         path: '/establecimientos-favoritos',
@@ -63,6 +67,14 @@ const routes = [
         component: RegistrarUsuario
     },
     {
+        path: '/recordar-contrasena',
+        name: 'RecordarContrasena',
+        meta: {
+            requiresGuest: true
+        },
+        component: RecordarContrasena
+    },
+    {
         path: '/no-autorizado',
         name: 'AccionNoAutorizada',
         component: AccionNoAutorizada
@@ -83,29 +95,17 @@ router.beforeEach((to, from, next) => {
     //Comprobamos si la ruta de destino precisa autenticación
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         console.log("router/index.js: Redirect con requiresAuth...");
+        //Primero sincronizo tokens
+        sincronizarTokens();
         //Si el token de store y el token de localstorage están establecidos continuo la redirección
-        if (store.state.tokenAuth && window.localStorage.getItem("tokenAuth")) {
+        if (store.state.tokenAuth && window.localStorage.getItem("tokenAuth") &&
+        store.state.tokenAuth == window.localStorage.getItem("tokenAuth")) {
             console.log("router/index.js: Tenemos token en state y storage por tanto dejo continuar");
             next();
         } else {
-            //Si no hay sesión en el state o en el local storage, miro cuál es el que falta y sincronizo ambos
-            if(window.localStorage.getItem("tokenAuth")){
-                console.log("router/index.js: Tenemos toquen en storage, sincronizo y dejo continuar");
-                store.dispatch(
-                    "almacenarTokenSesion",
-                    window.localStorage.getItem("tokenAuth"));
-
-                next();
-            }else{
-                if(store.state.tokenAuth){
-                    console.log("router/index.js: Tenemos token en state, sincronizo y dejo continuar");
-                    window.localStorage.setItem("tokenAuth", store.state.tokenAuth);
-                }else{
-                    console.log("router/index.js: No había token en ningún sitio, redirijo al login");
-                    //Si ninguna de las dos fuentes tiene el token, redirijo al inicio de sesión
-                    next({name: "IniciarSesion"});
-                }
-            }
+            console.log("router/index.js: No había token, redirijo al login");
+            //Si ninguna de las dos fuentes tiene el token, redirijo al inicio de sesión
+            next({name: "IniciarSesion"});
         }
     } else {
         //Compruebo si la ruta precisa acceder como invitado
@@ -116,15 +116,34 @@ router.beforeEach((to, from, next) => {
                 console.log("router/index.js: No hay toquen en ningun sitio, dejo continuar porque es invitado.");
                 next();
             } else {
+                sincronizarTokens();
                 console.log("router/index.js: He encontrado algún token, redirijo al perfil");
                 //Si no, redirijo a la cuenta de usuario
                 next({name: "CuentaUsuario"});
             }
         } else {
+            sincronizarTokens();
             console.log("router/index.js: La ruta destino no tiene ningun requisito, dejo continuar");
             next();
         }
     }
 });
+function sincronizarTokens(){
+    if (store.state.tokenAuth && window.localStorage.getItem("tokenAuth")) {
+        if (store.state.tokenAuth != window.localStorage.getItem("tokenAuth")) {
+            //Si hay token en las dos fuentes pero son distintos, borro
+            store.state.tokenAuth = "";
+            window.localStorage.removeItem("tokenAuth");
+        }
+    }else{
+        if(store.state.tokenAuth){
+            window.localStorage.setItem(store.state.tokenAuth);
+        }else{
+            if (window.localStorage.getItem("tokenAuth")) {
+                store.dispatch("almacenarTokenSesion", window.localStorage.getItem("tokenAuth"));
+            }
+        }
+    }
+}
 
 export default router

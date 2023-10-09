@@ -1,9 +1,8 @@
 <template>
-    Mis establecimiento
+    recordar contraseña
 </template>
-
 <script>
 export default {
-    name: "MisEstablecimientos"
+    name: "RecordarContrasena",
 }
 </script>

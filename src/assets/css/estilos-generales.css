@@ -2,7 +2,30 @@ html, body, .container {
     height: 100%;
 }
 
+h1,h2,h3,h4,h5,h6 {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.dimgrey {
+    color: dimgrey;
+}
+
+a, label {
+    color: dimgrey;
+}
+
+.btn {
+    color: #FFFFFF !important;
+    border-radius: 25px;
+    border: none !important;
+}
 .btn-primary {
+    background: rgb(253,137,86) !important;
+    background: linear-gradient(90deg, rgb(253, 137, 76) 0%, rgba(252,183,132,1) 100%) !important;
+
+}
+
+.btn-primary:hover {
     background: rgb(253,137,86) !important;
     background: linear-gradient(90deg, rgb(253, 137, 76) 0%, rgba(252,183,132,1) 100%) !important;
     color: #FFFFFF !important;
@@ -15,6 +38,10 @@ html, body, .container {
     color: #FFFFFF !important;
     border-radius: 25px;
     border: none !important;
+}
+
+input {
+    border-radius: 50px !important;
 }
 
 textarea:focus,
@@ -75,6 +102,10 @@ nav.navbar {
     animation-duration: 1500ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+}
+
+.login-logo {
+    margin-top: -100px;
 }
 
 @keyframes spin {

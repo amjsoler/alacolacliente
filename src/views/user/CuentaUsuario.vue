@@ -1,7 +1,10 @@
 <template>
+  <button class="btn btn-danger" @click.prevent="cerrarSesion">
+      <span class="material-symbols-outlined align-bottom">logout</span>
+      Cerrar sesión
+  </button>
   {{ usuario }}
 
-  <button class="btn btn-primary" @click.prevent="cerrarSesion">Cerrar Sesión</button>
 </template>
 
 <script>
@@ -36,3 +39,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.btn.btn-danger {
+    position: relative;
+    float: right;
+}
+</style>
