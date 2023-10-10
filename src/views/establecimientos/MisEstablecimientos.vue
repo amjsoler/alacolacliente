@@ -1,14 +1,22 @@
 <template>
     <div>
         {{establecimientos}}
+
+      <router-link :to="name=CrearEstablecimiento">Crear establecimiento</router-link>
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import CrearEstablecimiento from "@/views/establecimientos/CrearEstablecimiento.vue";
 
 export default {
     name: "MisEstablecimientos",
+  computed: {
+    CrearEstablecimiento() {
+      return CrearEstablecimiento
+    }
+  },
     data() {
         return {
             establecimientos: []

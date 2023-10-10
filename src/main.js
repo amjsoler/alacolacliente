@@ -47,11 +47,20 @@ axios.interceptors.response.use(response => {
         router.push({name:"IniciarSesion"});
     }
 
-    if(error.response.status == 403){
+    else if(error.response.status == 403){
         console.log("main.js: Response error captured. 403. Acción no permitida al user.");
         //TODO: Loguear esto al server por si hay que emprender acciones contra el usuario
     }
 
+    else if(error.response.status == 422){
+        console.log("main.js: Response error captured 422. Set de state errors y message");
+        if(error.response && error.response.data &&
+            error.response.data.errors &&
+            error.response.data.message){
+            store.commit("almacenarArrayErrores", error.response.data.errors);
+            store.commit("almacenarMensaje", error.response.data.message);
+        }
+    }
     //TODO: Manejar también los 404
 
     return Promise.reject(error)

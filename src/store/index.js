@@ -8,6 +8,8 @@ export default createStore({
 
     state: {
         tokenAuth: "",
+        errors: [],
+        message: ""
     },
     mutations: {
         almacenarTokenSesion(state, newTokenSesion){
@@ -18,6 +20,16 @@ export default createStore({
         cerrarSesion(state) {
             console.log("storage/index.js: cerrando sesión de state");
             state.tokenAuth = "";
+        },
+
+        almacenarArrayErrores(state, errors) {
+            console.log("storage/index.js: almacenando errores en el state");
+            state.errors = errors;
+        },
+
+        almacenarMensaje(state, mensaje) {
+            console.log("storage/index.js: almacenando el mensaje en el state");
+            state.message = mensaje;
         }
     },
     actions: {

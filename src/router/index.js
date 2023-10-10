@@ -11,6 +11,7 @@ import CuentaUsuario from "@/views/user/CuentaUsuario.vue";
 import EstablecimientosFavoritos from "@/views/establecimientos/EstablecimientosFavoritos.vue";
 import AccionNoAutorizada from "@/views/AccionNoAutorizada.vue";
 import RecordarContrasena from "@/views/user/RecordarContrasena.vue";
+import CrearEstablecimiento from "@/views/establecimientos/CrearEstablecimiento.vue";
 
 //Las rutas de la aplicación
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
         component: VerEstablecimiento
     },
     {
+        path: '/establecimientos/crear',
+        name: 'CrearEstablecimiento',
+        component: CrearEstablecimiento
+    },
+    {
         path: '/mis-establecimientos',
         name: 'MisEstablecimientos',
         component: MisEstablecimientos,
@@ -33,7 +39,7 @@ const routes = [
         },
     },
     {
-        path: '/establecimientos-favoritos',
+        path: '/establecimientos/favoritos',
         name: 'EstablecimientosFavoritos',
         component: EstablecimientosFavoritos
     },
@@ -92,6 +98,8 @@ const router = createRouter({
 * requiresGuest: La ruta de destino obliga a no estar logueado para poder acceder
 */
 router.beforeEach((to, from, next) => {
+    //Vacio el global state de validaciones
+    vaciarValidaciones();
     //Comprobamos si la ruta de destino precisa autenticación
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         console.log("router/index.js: Redirect con requiresAuth...");
@@ -128,6 +136,12 @@ router.beforeEach((to, from, next) => {
         }
     }
 });
+
+function vaciarValidaciones() {
+    store.commit("almacenarArrayErrores", []);
+    store.commit("almacenarMensaje", "");
+}
+
 function sincronizarTokens(){
     if (store.state.tokenAuth && window.localStorage.getItem("tokenAuth")) {
         if (store.state.tokenAuth != window.localStorage.getItem("tokenAuth")) {

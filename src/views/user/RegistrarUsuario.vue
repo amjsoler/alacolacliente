@@ -1,38 +1,32 @@
 <template>
-  <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
-    <div class="card w-75 border-0">
-      <div class="card-body">
-        <form>
-          <div class="mb-5">
-            <FormLabel>Nombre</FormLabel>
-            <input v-model="name" class="form-control block w-full rounded-md shadow-sm" type="text" autofocus />
-            <span v-if="errors.name" class="text-danger small w-100">{{ errors.name[0] }}</span>
-          </div>
-          <div class="mb-5">
-            <FormLabel>Correo electrónico</FormLabel>
-            <input v-model="email" class="form-control block w-full rounded-md shadow-sm" type="email" autofocus />
-            <span v-if="errors.email" class="text-danger small w-100">{{ errors.email[0] }}</span>
-          </div>
-          <div class="mb-5">
-            <FormLabel>Contraseña</FormLabel>
-            <input v-model="password" class="form-control block w-full rounded-md shadow-sm" type="password" autofocus />
-            <span v-if="errors.password" class="text-danger small w-100">{{ errors.password[0] }}</span>
-          </div>
-          <div class="mb-5">
-            <FormLabel>Repetir contraseña</FormLabel>
-            <input v-model="password_confirmation" class="form-control block w-full rounded-md shadow-sm" type="password" autofocus />
-            <span v-if="errors.password_confirmation" class="text-danger small w-100">{{ errors.password_confirmation[0] }}</span>
-          </div>
+  <div-centro-pantalla>
+    <form-card>
+      <form>
+        <form-group>
+          <form-label>Nombre</form-label>
+          <input-control type="text" v-model="name" autofocus />
+          <input-error v-if="errors.name">{{ errors.name[0] }}</input-error>
+        </form-group>
+        <form-group>
+          <form-label>Correo electrónico</form-label>
+          <input-control type="email" v-model="email" />
+          <input-error v-if="errors.email">{{ errors.email[0] }}</input-error>
+        </form-group>
+        <form-group>
+          <form-label>Contraseña</form-label>
+          <input-control type="password" v-model="password" />
+          <input-error v-if="errors.password">{{ errors.password[0] }}</input-error>
+        </form-group>
+        <form-group>
+          <form-label>Repetir contraseña</form-label>
+          <input-control type="password" v-model="password_confirmation" />
+          <input-error v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</input-error>
+        </form-group>
 
-          <div class="d-grid gap-2 col-12 mx-auto">
-            <button @click.prevent="enviarFormularioRegistro" class="btn btn-primary" type="submit">
-              Registrarse
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+        <button-submit @submit-click="enviarFormularioRegistro">Registrarse</button-submit>
+      </form>
+    </form-card>
+  </div-centro-pantalla>
 </template>
 
 <script>
@@ -40,10 +34,16 @@ import axios from "axios";
 import router from "@/router";
 
 import FormLabel from "@/components/generales/formularios/FormLabel.vue";
+import FormGroup from "@/components/generales/formularios/FormGroup.vue";
+import InputError from "@/components/generales/formularios/InputError.vue";
+import FormCard from "@/components/generales/formularios/FormCard.vue";
+import DivCentroPantalla from "@/components/generales/DivCentroPantalla.vue";
+import ButtonSubmit from "@/components/generales/formularios/ButtonSubmit.vue";
+import InputControl from "@/components/generales/formularios/InputControl.vue";
 
 export default {
     name:"RegistrarUsuario",
-  components: {FormLabel},
+  components: {InputControl, ButtonSubmit, DivCentroPantalla, FormCard, InputError, FormGroup, FormLabel},
 
   data() {
       return {
