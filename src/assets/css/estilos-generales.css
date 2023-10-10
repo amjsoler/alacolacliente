@@ -97,6 +97,10 @@ nav.navbar {
     color: #DA7540 !important;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .girando {
     animation-name: spin;
     animation-duration: 1500ms;
