@@ -1,4 +1,5 @@
 <template>
+  <herramientas-administrador v-if="usuarioAdmin" :establecimiento-id="establecimientoID"/>
     <div class="row datos-establecimiento">
         <div class="col-4">
             <img :src="dameRutaLogo" class="img-fluid rounded-start" alt="logo">
@@ -29,10 +30,11 @@
 <script>
 import axios from "axios";
 import DarQuitarMegusta from "@/components/generales/DarQuitarMegusta.vue";
+import HerramientasAdministrador from "@/components/establecimientos/HerramientasAdministrador.vue";
 
 export default {
     name: "VerEstablecimiento",
-  components: {DarQuitarMegusta},
+  components: {HerramientasAdministrador, DarQuitarMegusta},
     data() {
         return {
             establecimientoID: this.$route.params.id,
@@ -40,6 +42,7 @@ export default {
             usuariosEncolados: [],
             establecimientoFavorito: null,
             usuarioEnCola: null,
+          usuarioAdmin: null,
         }
     },
     computed: {
@@ -47,7 +50,7 @@ export default {
             if(this.establecimiento.logo){
                 return process.env.VUE_APP_BASE_URL + this.establecimiento.logo;
             }      else{
-                return process.env.VUE_APP_BASE_URL + "storage/noimage.jpg";
+                return "/no-logo.jpg";
             }
         },
       dameRutaMeGusta: function() {
@@ -71,6 +74,7 @@ export default {
                 this.usuariosEncolados = response.data.usuariosEncolados;
                 this.establecimientoFavorito = response.data.establecimientoFavorito;
                 this.usuarioEnCola = response.data.usuarioEnCola;
+                this.usuarioAdmin = response.data.userAdmin;
               })
               .catch(error => {
                 console.log("verEstablecimiento.vue: Respuesta KO. Muestro una vista de error y un botón de recarga?");

@@ -3,11 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import './assets/css/bootstrap.min.css'
-import './assets/css/googlefonts.css'
+import"bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
 
-import './assets/css/estilos-generales.css'
+import '@/assets/css/estilos-generales.css'
 //TODO: Ver como minificar todo los recursos
+
 
 import axios from "axios";
 
