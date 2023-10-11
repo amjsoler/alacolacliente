@@ -4,8 +4,7 @@
     <div class="card mb-3">
       <div class="g-0 d-flex">
         <div class="col-4">
-          <img v-if="establecimiento.logo" :src="process.env.VUE_APP_SERVER_BASE_URL + establecimiento.logo" class="img-fluid rounded-start" alt="logo">
-          <img v-else src="/no-logo.jpg" class="img-fluid rounded-start" alt="logo">
+          <img :src="dameUrlLogo" class="img-fluid rounded-start" alt="logo">
         </div>
         <div class="col-8">
           <div class="card-body">
@@ -26,6 +25,15 @@
 <script>
 export default {
   name: "EstablecimientoLista",
-  props: ["establecimiento"]
+  props: ["establecimiento"],
+  computed: {
+    dameUrlLogo() {
+      if(this.establecimiento.logo){
+        return process.env.VUE_APP_BASE_URL + this.establecimiento.logo;
+      }else{
+        return "/no-logo.jpg";
+      }
+    }
+  }
 }
 </script>
