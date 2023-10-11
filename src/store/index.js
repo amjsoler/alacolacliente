@@ -9,9 +9,15 @@ export default createStore({
     state: {
         tokenAuth: "",
         errors: [],
-        message: ""
+        message: "",
+        toastApp: {},
     },
     mutations: {
+        almacenarMensajeToast(state, {mensaje, tipo}){
+            console.log("storage/index.js: almacenando mensaje para el toast");
+            state.toastApp.mensaje = mensaje;
+            state.toastApp.tipo = tipo;
+        },
         almacenarTokenSesion(state, newTokenSesion){
             console.log("storage/index.js: almacenando token de sesión en el state");
             state.tokenAuth = newTokenSesion;
@@ -33,6 +39,11 @@ export default createStore({
         }
     },
     actions: {
+        almacenarMensajeToast({commit}, {mensaje, tipo}) {
+            console.log("storage/index.js: almacenando mensaje del toast en state");
+
+            commit("almacenarMensajeToast", {mensaje, tipo});
+        },
         almacenarTokenSesion({commit}, newTokenSesion) {
             console.log("storage/index.js: almacenando token de sesión en el localstorage");
             //Almaceno en la memoria del dispositivo

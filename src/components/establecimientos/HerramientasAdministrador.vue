@@ -37,9 +37,10 @@
 
 <script>
 
-import {Modal} from 'bootstrap'
-import router from "@/router";
 import axios from "axios";
+
+import helpers from "@/helpers/globalHelpers.vue"
+import router from "@/router";
 
 export default {
   props: ["establecimientoId"],
@@ -54,9 +55,9 @@ export default {
           .then(() => {
             console.log("HerramientasAdministrador.vue: Response OK: Redirigiendo a mis establecimientos");
 
-            //Cierro el modal primeroa ntes de redirigir
-            var modal = Modal.getInstance(document.querySelector(".modal.show"));
-            modal.hide();
+            helpers.cerrarTodosLosModalesAbiertos();
+
+            helpers.mostrarToast("El establecimiento se ha eliminado correctamente");
 
             router.push({name:"MisEstablecimientos"});
           })
