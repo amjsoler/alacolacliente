@@ -6,11 +6,6 @@
         <input-error v-if="errors.nombre">{{errors.nombre[0]}}</input-error>
       </form-group>
       <form-group>
-        <form-label>Logo</form-label>
-        <input type="file" class="file" />
-        <input-error v-if="errors.logo">{{errors.logo[0]}}</input-error>
-      </form-group>
-      <form-group>
         <form-label>Dirección</form-label>
         <input-control v-model="direccion" type="text" />
         <input-error v-if="errors.direccion">{{errors.direccion[0]}}</input-error>
@@ -19,6 +14,14 @@
         <form-label>Descripción</form-label>
         <text-area-tiny-mce v-model="descripcion"/>
         <input-error v-if="errors.descripcion">{{errors.descripcion[0]}}</input-error>
+      </form-group>
+      <form-group>
+        <form-label>Logo</form-label>
+        <input type="file" class="invisible" id="inputLogo" @change="imagenSubida"/>
+        <div class="d-flex justify-content-center">
+          <img :src="urlAux" class="img-fluid" onclick="document.getElementById('inputLogo').click()">
+        </div>
+        <input-error v-if="errors.logo">{{errors.logo[0]}}</input-error>
       </form-group>
       <button @click.prevent="crearEstablecimiento" class="btn btn-primary w-100">Crear mi establecimiento</button>
     </div>
@@ -48,6 +51,7 @@ export default {
       geolocalizacionActiva: false,
       latitud: "",
       longitud: "",
+      urlAux: "/no-logo.jpg",
     }
   },
   computed: {
@@ -60,12 +64,20 @@ export default {
   },
   methods: {
     crearEstablecimiento(){
+      console.log("CrearEstablecimiento.vue: Mandando petición de creación de establecimiento...");
+      console.log("El logo: " + this.logo);
+      const formData = new FormData();
+      formData.append("nombre", this.nombre);
+      formData.append("logo", this.logo);
+      formData.append("direccion", this.direccion);
+      formData.append("descripcion", this.descripcion);
       axios.post(process.env.VUE_APP_API_BASE_URL+"establecimientos",
+          formData,
           {
-            nombre:this.nombre,
-            direccion:this.direccion,
-            descripcion:this.descripcion,
-          })
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+      })
           .then(response => {
             console.log("CrearEstablecimiento.vue: Establecimiento creado crrectamente, redirigiendo al nuevo establecimiento");
             router.push({name:"VerEstablecimiento",params:{id:response.data.id}})
@@ -74,6 +86,12 @@ export default {
             console.log("CrearEstablecimiento.vue: Error al crear el establecimiento");
             console.log(error);
           })
+    },
+
+    imagenSubida(e) {
+      const file = e.target.files[0];
+      this.urlAux = URL.createObjectURL(file);
+      this.logo = file;
     }
   }
 }

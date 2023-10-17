@@ -17,7 +17,7 @@ const app = createApp(App).use(store).use(router);
 //interceptor de todas las request que se encarga de incluir el token de auth (Si lo hay), accept y content-type a los headers
 axios.interceptors.request.use(function(config){
     config.headers.Accept = "application/json";
-    config.headers["Content-Type"] = "application/json";
+    //config.headers["Content-Type"] = "application/json";
 
     if(store.state.tokenAuth){
         config.headers.Authorization = "Bearer " + store.state.tokenAuth;

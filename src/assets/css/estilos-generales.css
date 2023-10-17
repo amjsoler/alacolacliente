@@ -53,7 +53,7 @@ input:not(.file), textarea{
 }
 
 .tox-toolbar {
-    justify-content: center;
+    justify-content: center !important;
 }
 
 textarea:focus,
