@@ -21,9 +21,9 @@
             </div>
         </div>
         <!-- TODO Textarea descripción -->
-        <textarea v-model="establecimiento.descripcion" v-if="establecimiento.descripcion">
-
-        </textarea>
+        <text-area-tiny-mce v-model="establecimiento.descripcion"
+                            v-if="establecimiento.descripcion"
+                            disabled="true"/>
     </div>
 </template>
 
@@ -31,10 +31,11 @@
 import axios from "axios";
 import DarQuitarMegusta from "@/components/generales/DarQuitarMegusta.vue";
 import HerramientasAdministrador from "@/components/establecimientos/HerramientasAdministrador.vue";
+import TextAreaTinyMce from "@/components/generales/formularios/TextAreaTinyMce.vue";
 
 export default {
     name: "VerEstablecimiento",
-  components: {HerramientasAdministrador, DarQuitarMegusta},
+  components: {TextAreaTinyMce, HerramientasAdministrador, DarQuitarMegusta},
     data() {
         return {
             establecimientoID: this.$route.params.id,
@@ -87,3 +88,9 @@ export default {
     },
 }
 </script>
+
+<style>
+.tox-tinymce--disabled .tox-editor-header{
+  display: none;
+}
+</style>

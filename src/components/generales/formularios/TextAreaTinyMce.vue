@@ -6,8 +6,9 @@
         menubar: false,
         toolbar: 'bold italic | alignleft aligncenter alignright',
         statusbar: false,
-        plugins: ''
+        plugins: '',
       }"
+      :disabled="dameDisabled"
   />
 </template>
 
@@ -20,14 +21,24 @@ export default {
   components: {Editor},
   data: function () {
     return {
-      content: this.value // default to the passed value
+      content: this.value, // default to the passed valu
+    }
+  },
+  computed: {
+    dameDisabled() {
+      if(this.disabled){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   props: {
     value: {
       type: String,
       default: ''
-    }
+    },
+    disabled: {},
   },
   methods: {
     update: function () {
