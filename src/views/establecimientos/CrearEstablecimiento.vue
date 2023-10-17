@@ -17,7 +17,7 @@
       </form-group>
       <form-group>
         <form-label>Descripción</form-label>
-        <textarea v-model="descripcion"></textarea>
+        <text-area-tiny-mce v-model="descripcion"/>
         <input-error v-if="errors.descripcion">{{errors.descripcion[0]}}</input-error>
       </form-group>
       <button @click.prevent="crearEstablecimiento" class="btn btn-primary w-100">Crear mi establecimiento</button>
@@ -25,17 +25,20 @@
 </template>
 
 <script>
-import FormGroup from "@/components/generales/formularios/FormGroup.vue";
-import FormLabel from "@/components/generales/formularios/FormLabel.vue";
-import InputError from "@/components/generales/formularios/InputError.vue";
-import InputControl from "@/components/generales/formularios/InputControl.vue";
+
 import axios from "axios";
 import router from "@/router";
 import {mapState} from "vuex";
 
+import FormGroup from "@/components/generales/formularios/FormGroup.vue";
+import FormLabel from "@/components/generales/formularios/FormLabel.vue";
+import InputError from "@/components/generales/formularios/InputError.vue";
+import InputControl from "@/components/generales/formularios/InputControl.vue";
+import TextAreaTinyMce from "@/components/generales/formularios/TextAreaTinyMce.vue";
+
 export default {
   name: "CrearEstablecimiento",
-  components: {InputControl, InputError, FormLabel, FormGroup},
+  components: {TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
   data() {
     return {
       nombre: "",

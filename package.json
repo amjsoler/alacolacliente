@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "asn1": "^0.2.6",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
@@ -16,6 +17,7 @@
     "get-google-fonts": "^1.2.2",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",
+    "tinymce-vue": "^1.0.0",
     "url": "^0.11.3",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",

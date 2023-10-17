@@ -2,6 +2,10 @@ html, body, .container {
     height: 100%;
 }
 
+.container > div {
+    padding-bottom: 75px;
+}
+
 h1,h2,h3,h4,h5,h6 {
     color: rgba(0, 0, 0, 0.6);
 }
@@ -40,8 +44,16 @@ a, label {
     border: none !important;
 }
 
-input:not(.file) {
+input:not(.file), textarea{
     border-radius: 50px !important;
+}
+
+.tox-tinymce {
+    border-radius: 10px !important;
+}
+
+.tox-toolbar {
+    justify-content: center;
 }
 
 textarea:focus,

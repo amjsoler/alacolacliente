@@ -37,6 +37,12 @@ Si el server responde 403 significa que no hay autorización para acceder al rec
 capturo el error, lo logueo y redirijo a una página de forbidden
  */
 axios.interceptors.response.use(response => {
+    console.log("main.js: Response captured. 200. Borrando el state error y message...");
+    if(response.status == 200){
+        store.commit("almacenarArrayErrores", []);
+        store.commit("almacenarMensaje", "");
+    }
+
     return response;
 }, error => {
     if(error.response.status == 401){
