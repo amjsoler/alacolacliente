@@ -17,10 +17,7 @@
       </form-group>
       <form-group>
         <form-label>Logo</form-label>
-        <input type="file" class="invisible" id="inputLogo" @change="imagenSubida"/>
-        <div class="d-flex justify-content-center">
-          <img :src="urlAux" class="img-fluid" onclick="document.getElementById('inputLogo').click()">
-        </div>
+        <input-image-with-preview image-default="/no-logo.jpg" @logo-subido="elLogo => this.logo = elLogo"/>
         <input-error v-if="errors.logo">{{errors.logo[0]}}</input-error>
       </form-group>
       <button @click.prevent="crearEstablecimiento" class="btn btn-primary w-100">Crear mi establecimiento</button>
@@ -38,10 +35,11 @@ import FormLabel from "@/components/generales/formularios/FormLabel.vue";
 import InputError from "@/components/generales/formularios/InputError.vue";
 import InputControl from "@/components/generales/formularios/InputControl.vue";
 import TextAreaTinyMce from "@/components/generales/formularios/TextAreaTinyMce.vue";
+import InputImageWithPreview from "@/components/generales/formularios/InputImageWithPreview.vue";
 
 export default {
   name: "CrearEstablecimiento",
-  components: {TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
+  components: {InputImageWithPreview, TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
   data() {
     return {
       nombre: "",
@@ -51,7 +49,6 @@ export default {
       geolocalizacionActiva: false,
       latitud: "",
       longitud: "",
-      urlAux: "/no-logo.jpg",
     }
   },
   computed: {
@@ -87,12 +84,6 @@ export default {
             console.log(error);
           })
     },
-
-    imagenSubida(e) {
-      const file = e.target.files[0];
-      this.urlAux = URL.createObjectURL(file);
-      this.logo = file;
-    }
   }
 }
 </script>
