@@ -12,6 +12,7 @@ import EstablecimientosFavoritos from "@/views/establecimientos/Establecimientos
 import AccionNoAutorizada from "@/views/AccionNoAutorizada.vue";
 import RecordarContrasena from "@/views/user/RecordarContrasena.vue";
 import CrearEstablecimiento from "@/views/establecimientos/CrearEstablecimiento.vue";
+import globalHelpers from "@/helpers/globalHelpers.vue";
 
 //Las rutas de la aplicación
 const routes = [
@@ -100,6 +101,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     //Vacio el global state de validaciones
     vaciarValidaciones();
+
+    //Cierro modales que puedan quedar abiertos
+    globalHelpers.cerrarTodosLosModalesAbiertos();
+
     //Comprobamos si la ruta de destino precisa autenticación
     if (to.matched.some((record) => record.meta.requiresAuth)) {
         console.log("router/index.js: Redirect con requiresAuth...");

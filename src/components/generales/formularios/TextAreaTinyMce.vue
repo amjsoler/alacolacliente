@@ -48,3 +48,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.tox-tinymce--disabled .tox-editor-header{
+  display: none;
+}
+</style>

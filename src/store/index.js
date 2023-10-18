@@ -11,6 +11,7 @@ export default createStore({
         errors: [],
         message: "",
         toastApp: {},
+        nombreUsuarioInvitado: "",
     },
     mutations: {
         almacenarMensajeToast(state, {mensaje, tipo}){
@@ -36,7 +37,11 @@ export default createStore({
         almacenarMensaje(state, mensaje) {
             console.log("storage/index.js: almacenando el mensaje en el state");
             state.message = mensaje;
-        }
+        },
+        almacenarNombreUsuarioInvitado(state, nombreUsuario){
+            console.log("storage/index.js: almacenando el nombre de usuario en el state");
+            state.nombreUsuarioInvitado = nombreUsuario;
+        },
     },
     actions: {
         almacenarMensajeToast({commit}, {mensaje, tipo}) {
@@ -52,7 +57,11 @@ export default createStore({
             //Almaceno en el state para la sesión actual
             commit("almacenarTokenSesion", newTokenSesion);
         },
+        almacenarNombreUsuarioInvitado({commit}, nombreUsuario){
+            console.log("storage/index.js: almacenando nombre de usuario del usuario invitado:" + nombreUsuario);
 
+            commit("almacenarNombreUsuarioInvitado", nombreUsuario);
+        },
         cerrarSesion({commit}) {
             console.log("storage/index.js: Borrando token del storage");
             //Borrando el token del localstorage

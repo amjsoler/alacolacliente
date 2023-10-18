@@ -6,7 +6,10 @@ export default {
   cerrarTodosLosModalesAbiertos() {
     //Cierro el modal primeroa ntes de redirigir
     var modal = Modal.getInstance(document.querySelector(".modal.show"));
-    modal.hide();
+
+    if(modal){
+      modal.hide();
+    }
   },
 
   mostrarToast(mensaje, tipo){
