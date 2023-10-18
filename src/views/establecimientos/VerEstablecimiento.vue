@@ -31,7 +31,7 @@
 
     <!-- TODO: Cuadro con tres siguientes -->
     <div class="d-flex justify-content-center flex-column">
-      <div v-for="usuario in usuariosEncolados"
+      <div v-for="(usuario, index) in usuariosEncolados"
            v-bind:key="usuario.id">
         <!-- Comprobar si es user anonimo -->
         <div v-if="usuario.usuario_en_cola" class="d-flex align-items-center">
@@ -39,12 +39,18 @@
             <img class="img-fluid" :src="usuario.usuario.profile_photo_url">
           </div>
           {{ usuario.usuario.name }}
+          <a v-if="usuarioAdmin" class="cursor-pointer ms-2" @click="quitarUsuarioDeLaCola(usuario.id, index, usuario.usuario.name)">
+            <span class="material-symbols-outlined align-bottom">person_remove</span>
+          </a>
         </div>
         <div v-else class="d-flex align-items-center">
           <div class="cuadrado-logo-listado-usuario me-2">
             <img class="img-fluid" src="/no-user-logo.jpg">
           </div>
           {{ usuario.nombre_usuario_anonimo}}
+          <a v-if="usuarioAdmin" class="cursor-pointer ms-2" @click="quitarUsuarioDeLaCola(usuario.id, index, usuario.nombre_usuario_anonimo)">
+            <span class="material-symbols-outlined align-bottom">person_remove</span>
+          </a>
         </div>
       </div>
     </div>
@@ -187,12 +193,19 @@ export default {
           {
             nombre_usuario_anonimo: this.usernameGuest
           }
-      ).then(() => {
+      ).then(response => {
         console.log("verEstablecimiento.vue: apuntarse invitado response OK. Modificando la interfaz como toca");
 
-        //Muestro toast avisando del success
+        //Guardo el nuevo user en el array local
+        this.usuariosEncolados.push(response.data);
+
+        //Almaceno en global state
         this.almacenarNombreDeUsuario(this.usernameGuest);
+
+        //Muestro toast avisando del success
         globalHelpers.mostrarToast("Te has apuntado correctamente", "success");
+
+        //Cierro los modales
         globalHelpers.cerrarTodosLosModalesAbiertos();
       }).catch(error => {
         console.log("verEstablecimiento.vue: apuntarse invitado response KO. Log de error y no hago nada");
@@ -215,6 +228,25 @@ export default {
       }).catch(error => {
         console.log("verEstablecimiento.vue: pasarturno response KO. Log de error y no hago nada");
         console.log("verEstablecimiento.vue: Error al pasar turno: " + error);
+      })
+    },
+
+    quitarUsuarioDeLaCola(usuarioEnColaID, index, username) {
+      console.log("verEstablecimiento.vue: Entrando al quitarUsuarioDeLaCola");
+      console.log("verEstablecimiento.vue: Mandando petición para desapuntar usuario");
+
+      axios.get(
+          process.env.VUE_APP_API_BASE_URL+"establecimientos/"+this.establecimientoID+"/admin-desapunta-usuario/"+usuarioEnColaID
+      ).then(() => {
+        console.log("verEstablecimiento.vue: admin desapunta usuario response OK. Modificando la interfaz como toca");
+
+        globalHelpers.mostrarToast("has quitado a " + username + " de la cola");
+
+        this.usuariosEncolados.splice(index, 1);
+
+      }).catch(error => {
+        console.log("verEstablecimiento.vue: admin desapunta usuario response KO. Log de error y no hago nada");
+        console.log("verEstablecimiento.vue: Error al desapuntar usuario como admin: " + error);
       })
     }
   },
