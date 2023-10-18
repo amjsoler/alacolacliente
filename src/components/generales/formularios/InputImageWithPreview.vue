@@ -1,7 +1,7 @@
 <template>
   <input type="file" class="invisible" id="inputLogo" @change="imagenSubida"/>
   <div class="d-flex justify-content-center">
-    <img :src="urlAux" class="img-fluid" onclick="document.getElementById('inputLogo').click()">
+    <img :src="urlAux" class="img-fluid cursor-pointer" onclick="document.getElementById('inputLogo').click()">
   </div>
 </template>
 

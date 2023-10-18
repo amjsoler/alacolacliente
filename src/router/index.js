@@ -13,6 +13,7 @@ import AccionNoAutorizada from "@/views/AccionNoAutorizada.vue";
 import RecordarContrasena from "@/views/user/RecordarContrasena.vue";
 import CrearEstablecimiento from "@/views/establecimientos/CrearEstablecimiento.vue";
 import globalHelpers from "@/helpers/globalHelpers.vue";
+import ModificarEstablecimiento from "@/views/establecimientos/ModificarEstablecimiento.vue";
 
 //Las rutas de la aplicación
 const routes = [
@@ -30,6 +31,14 @@ const routes = [
         path: '/establecimientos/crear',
         name: 'CrearEstablecimiento',
         component: CrearEstablecimiento
+    },
+    {
+        path: '/establecimientos/modificar',
+        name: 'ModificarEstablecimiento',
+        component: ModificarEstablecimiento,
+        meta: {
+            requiresAuth: true
+        },
     },
     {
         path: '/mis-establecimientos',

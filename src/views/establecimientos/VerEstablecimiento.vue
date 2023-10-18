@@ -1,6 +1,6 @@
 <template>
   <div>
-    <herramientas-administrador v-if="usuarioAdmin" :establecimiento-id="establecimientoID"/>
+    <herramientas-administrador v-if="usuarioAdmin" :establecimiento="establecimiento"/>
     <div class="row datos-establecimiento">
       <div class="col-4">
         <img :src="dameRutaLogo" class="img-fluid rounded-start" alt="logo">

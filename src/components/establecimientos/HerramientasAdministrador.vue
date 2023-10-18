@@ -6,7 +6,8 @@
           <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Herramientas administrador</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body d-flex justify-content-center">
+        <div class="modal-body d-flex justify-content-center flex-column flex-">
+          <button class="btn btn-primary mb-3" @click.prevent="llamarAlGuardarEstablecimientoAModificar">Modificar Establecimiento</button>
           <button class="btn btn-danger" data-bs-target="#eliminarEstablecimientoModal" data-bs-toggle="modal">Eliminar Establecimiento</button>
         </div>
       </div>
@@ -41,17 +42,21 @@ import axios from "axios";
 
 import helpers from "@/helpers/globalHelpers.vue"
 import router from "@/router";
+import {mapActions} from "vuex";
 
 export default {
-  props: ["establecimientoId"],
+  props: ["establecimiento"],
   mounted() {
     console.log("HerramientasAdministrador.vue: Entrando al herramientas administrador");
   },
   methods: {
+    ...mapActions({
+      guardarEstablecimientoAModificar: "establecimientos/guardarEstablecimientoAModificar"
+    }),
     eliminarEstablecimiento() {
       console.log("HerramientasAdministrador.vue: Entrando al eliminarEstablecimiento. Mandando petición");
 
-      axios.delete(process.env.VUE_APP_API_BASE_URL+"establecimientos/"+this.establecimientoId)
+      axios.delete(process.env.VUE_APP_API_BASE_URL+"establecimientos/"+this.establecimiento.id)
           .then(() => {
             console.log("HerramientasAdministrador.vue: Response OK: Redirigiendo a mis establecimientos");
 
@@ -65,6 +70,12 @@ export default {
             console.log("HerramientasAdministrador.vue: Response KO: Error al intentar eliminar el establecimiento");
             console.log(error);
           });
+    },
+    llamarAlGuardarEstablecimientoAModificar() {
+      console.log("HerramientasAdministrador.vue: Almaceno el establecimiento a editar");
+      this.guardarEstablecimientoAModificar(this.establecimiento);
+
+      router.push({name:"ModificarEstablecimiento"});
     }
   }
 }
