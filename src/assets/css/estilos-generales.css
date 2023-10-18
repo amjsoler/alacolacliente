@@ -135,3 +135,8 @@ nav.navbar {
 .mb-75 {
     margin-bottom: 75px;
 }
+
+.cuadrado-logo-listado-usuario {
+    height: 50px;
+    width: 50px;
+}

@@ -1,73 +1,98 @@
 <template>
-  <herramientas-administrador v-if="usuarioAdmin" :establecimiento-id="establecimientoID"/>
-    <div class="row datos-establecimiento">
-        <div class="col-4">
-            <img :src="dameRutaLogo" class="img-fluid rounded-start" alt="logo">
-        </div>
-        <div class="col-8 mb-4">
-            <h1 class="text-center">{{ establecimiento.nombre }}</h1>
-
-            <div class="row mt-4">
-                <div class="col-8">
-                    <p class="dimgrey">{{ establecimiento.direccion }}</p>
-                </div>
-                <DarQuitarMegusta v-if="establecimientoFavorito != null"
-                                  :estado-me-gusta="establecimientoFavorito"
-                                  :url-dar-me-gusta="dameRutaMeGusta"
-                                  :url-quitar-me-gusta="dameRutaQuitarGusta"
-                                  @me-gusta-dado="establecimientoFavorito=true"
-                                  @me-gusta-quitado="establecimientoFavorito=false">
-                </DarQuitarMegusta>
-            </div>
-        </div>
-        <text-area-tiny-mce v-model="establecimiento.descripcion"
-                            v-if="establecimiento.descripcion"
-                            disabled="true"/>
-    </div>
-  <!-- TODO: Cuadro con tres siguientes -->
-
   <div>
-    <!-- apuntarse/desapuntarse -->
-    <!-- Usuario con login -->
-    <div v-if="usuarioEnCola != null">
-      <!-- Usuario ya en cola -->
-      <div v-if="usuarioEnCola == true" class="d-flex justify-content-center fixed-bottom">
-        <button @click="desencolarConSesion" class="btn btn-primary mb-75">Desencolar</button>
+    <herramientas-administrador v-if="usuarioAdmin" :establecimiento-id="establecimientoID"/>
+    <div class="row datos-establecimiento">
+      <div class="col-4">
+        <img :src="dameRutaLogo" class="img-fluid rounded-start" alt="logo">
       </div>
-      <!-- Usuario no está en cola -->
+      <div class="col-8 mb-4">
+        <h1 class="text-center">{{ establecimiento.nombre }}</h1>
+
+        <div class="row mt-4">
+          <div class="col-8">
+            <p class="dimgrey">{{ establecimiento.direccion }}</p>
+          </div>
+          <DarQuitarMegusta v-if="establecimientoFavorito != null"
+                            :estado-me-gusta="establecimientoFavorito"
+                            :url-dar-me-gusta="dameRutaMeGusta"
+                            :url-quitar-me-gusta="dameRutaQuitarGusta"
+                            @me-gusta-dado="establecimientoFavorito=true"
+                            @me-gusta-quitado="establecimientoFavorito=false">
+          </DarQuitarMegusta>
+        </div>
+      </div>
+      <text-area-tiny-mce v-model="establecimiento.descripcion"
+                          v-if="establecimiento.descripcion"
+                          disabled="true"/>
+    </div>
+    <div class="d-flex justify-content-center" v-if="usuarioAdmin">
+      <button @click="pasarTurno" class="btn btn-primary">Pasar turno</button>
+    </div>
+
+    <!-- TODO: Cuadro con tres siguientes -->
+    <div class="d-flex justify-content-center flex-column">
+      <div v-for="usuario in usuariosEncolados"
+           v-bind:key="usuario.id">
+        <!-- Comprobar si es user anonimo -->
+        <div v-if="usuario.usuario_en_cola" class="d-flex align-items-center">
+          <div class="cuadrado-logo-listado-usuario me-2">
+            <img class="img-fluid" :src="usuario.usuario.profile_photo_url">
+          </div>
+          {{ usuario.usuario.name }}
+        </div>
+        <div v-else class="d-flex align-items-center">
+          <div class="cuadrado-logo-listado-usuario me-2">
+            <img class="img-fluid" src="/no-user-logo.jpg">
+          </div>
+          {{ usuario.nombre_usuario_anonimo}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de apuntarse -->
+    <div>
+      <!-- apuntarse/desapuntarse -->
+      <!-- Usuario con login -->
+      <div v-if="usuarioEnCola != null">
+        <!-- Usuario ya en cola -->
+        <div v-if="usuarioEnCola == true" class="d-flex justify-content-center fixed-bottom">
+          <button @click="desencolarConSesion" class="btn btn-primary mb-75">Desapuntarme</button>
+        </div>
+        <!-- Usuario no está en cola -->
+        <div v-else class="d-flex justify-content-center fixed-bottom">
+          <button @click="encolarConSesion" class="btn btn-primary mb-75">Apuntarme</button>
+        </div>
+      </div>
+      <!-- Usuario sin login -->
       <div v-else class="d-flex justify-content-center fixed-bottom">
-        <button @click="encolarConSesion" class="btn btn-primary mb-75">Encolar</button>
+        <div v-if="nombreUsuarioInvitado" class="mb-75 text-center">
+          Estás apuntado como invitado con nombre de usuario <b>{{nombreUsuarioInvitado}}</b>
+        </div>
+        <div v-else>
+          <button class="btn btn-primary mb-75" data-bs-target="#apuntarseSinLogin" data-bs-toggle="modal">Apuntarme</button>
+        </div>
       </div>
     </div>
-    <!-- Usuario sin login -->
-    <div v-else class="d-flex justify-content-center fixed-bottom">
-      <div v-if="nombreUsuarioInvitado" class="mb-75 text-center">
-        Estás apuntado como invitado con nombre de usuario <b>{{nombreUsuarioInvitado}}</b>
+
+
+    <modal-general id="apuntarseSinLogin" titulo="¡Atención!" v-if="usuarioEnCola == null">
+      No has iniciado sesión de usuario. Si te apuntas como invitado, corres el riesgo de perder tu posición en la cola si se cierra la app
+      <div class="d-flex justify-content-center">
+        <router-link :to='{name: "IniciarSesion"}' class="btn btn-primary">Iniciar sesión</router-link>
+        <button data-bs-target="#formularioApuntarseInvitado" data-bs-toggle="modal" class="btn btn-secondary ms-2">Apuntarme</button>
       </div>
-      <div v-else>
-        <button class="btn btn-primary mb-75" data-bs-target="#apuntarseSinLogin" data-bs-toggle="modal">Apuntarme</button>
-      </div>
-    </div>
+    </modal-general>
+    <modal-general id="formularioApuntarseInvitado" titulo="Apuntarse como invitado" v-if="usuarioEnCola == null">
+      <form>
+        <form-label>Nombre de usuario</form-label>
+        <input-control type="text" v-model="usernameGuest" />
+        <input-error v-if="errors.nombre_usuario_anonimo">{{errors.nombre_usuario_anonimo[0]}}</input-error>
+        <button-submit @submit-click="apuntarComoInvitado">
+          Apuntarme
+        </button-submit>
+      </form>
+    </modal-general>
   </div>
-
-
-  <modal-general id="apuntarseSinLogin" titulo="¡Atención!" v-if="usuarioEnCola == null">
-    No has iniciado sesión de usuario. Si te apuntas como invitado, corres el riesgo de perder tu posición en la cola si se cierra la app
-    <div class="d-flex justify-content-center">
-      <router-link :to='{name: "IniciarSesion"}' class="btn btn-primary">Iniciar sesión</router-link>
-      <button data-bs-target="#formularioApuntarseInvitado" data-bs-toggle="modal" class="btn btn-secondary ms-2">Apuntarme</button>
-    </div>
-  </modal-general>
-  <modal-general id="formularioApuntarseInvitado" titulo="Apuntarse como invitado" v-if="usuarioEnCola == null">
-    <form>
-      <form-label>Nombre de usuario</form-label>
-      <input-control type="text" v-model="usernameGuest" />
-      <input-error v-if="errors.nombre_usuario_anonimo">{{errors.nombre_usuario_anonimo[0]}}</input-error>
-      <button-submit @submit-click="apuntarComoInvitado">
-        Apuntarme
-      </button-submit>
-    </form>
-  </modal-general>
 </template>
 
 <script>
@@ -158,9 +183,9 @@ export default {
       console.log("verEstablecimiento.vue: Mando petición de encolar invitado");
 
       axios.post(
-          process.env.VUE_APP_API_BASE_URL+"establecimientos/"+this.establecimientoID+"/apuntarse-como-invitado",
+          process.env.VUE_APP_API_BASE_URL + "establecimientos/" + this.establecimientoID + "/apuntarse-como-invitado",
           {
-            nombre_usuario_anonimo:this.usernameGuest
+            nombre_usuario_anonimo: this.usernameGuest
           }
       ).then(() => {
         console.log("verEstablecimiento.vue: apuntarse invitado response OK. Modificando la interfaz como toca");
@@ -172,6 +197,24 @@ export default {
       }).catch(error => {
         console.log("verEstablecimiento.vue: apuntarse invitado response KO. Log de error y no hago nada");
         console.log("verEstablecimiento.vue: Error al apuntarse invitado: " + error);
+      })
+    },
+
+    pasarTurno() {
+        console.log("verEstablecimiento.vue: Entrando al pasarTurno");
+        console.log("verEstablecimiento.vue: Mandando petición para pasar turno");
+
+      axios.get(
+          process.env.VUE_APP_API_BASE_URL+"establecimientos/"+this.establecimientoID+"/pasar-turno"
+      ).then(() => {
+        console.log("verEstablecimiento.vue: pasarturno response OK. Modificando la interfaz como toca");
+
+        this.usuariosEncolados.splice(0, 1);
+
+        globalHelpers.mostrarToast("Has pasado turno");
+      }).catch(error => {
+        console.log("verEstablecimiento.vue: pasarturno response KO. Log de error y no hago nada");
+        console.log("verEstablecimiento.vue: Error al pasar turno: " + error);
       })
     }
   },
