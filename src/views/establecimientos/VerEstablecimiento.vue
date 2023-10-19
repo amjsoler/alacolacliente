@@ -21,10 +21,20 @@
           </DarQuitarMegusta>
         </div>
       </div>
-      <text-area-tiny-mce v-model="establecimiento.descripcion"
-                          v-if="establecimiento.descripcion"
-                          disabled="true"/>
+      <div class="text-center">
+        <div id="tinyCollapseContainer" class="collapse">
+          <text-area-tiny-mce v-model="establecimiento.descripcion"
+                              v-if="establecimiento.descripcion"
+                              disabled="true"/>
+        </div>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#tinyCollapseContainer">
+          <span class="material-symbols-outlined align-bottom">expand_more</span>
+          Ver descripción
+          <span class="material-symbols-outlined align-bottom">expand_more</span>
+        </button>
+      </div>
     </div>
+    <hr>
     <div class="d-flex justify-content-center" v-if="usuarioAdmin">
       <button @click="pasarTurno" class="btn btn-primary">Pasar turno</button>
     </div>
@@ -277,3 +287,7 @@ export default {
     },
 }
 </script>
+
+<style>
+
+</style>
