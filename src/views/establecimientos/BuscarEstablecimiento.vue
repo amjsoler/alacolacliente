@@ -12,6 +12,10 @@
   <establecimiento-lista v-for="establecimiento in busquedaRealizada"
                          v-bind:key="establecimiento.id"
                          :establecimiento="establecimiento" />
+
+  <button class="btn btn-primary" @click.prevent="buscarEstablecimientosCercanos">
+    Buscar establecimientos cercanos
+  </button>
 </template>
 
 <script>
@@ -20,6 +24,7 @@ import axios from "axios";
 import InputControl from "@/components/generales/formularios/InputControl.vue";
 import InputError from "@/components/generales/formularios/InputError.vue";
 import EstablecimientoLista from "@/components/establecimientos/EstablecimientoLista.vue";
+import store from "@/store";
 
 export default {
     name: "BuscarEstablecimiento",
@@ -54,7 +59,35 @@ export default {
                 console.log("BuscarEstablecimiento.vue: Response KO: Error al buscar");
                 console.log(error);
               })
-        }
+        },
+
+    buscarEstablecimientosCercanos() {
+      const opcionesDeSolicitud = {
+        enableHighAccuracy: true, // Alta precisión
+        maximumAge: 0, // No queremos caché
+        timeout: 5000 // Esperar solo 5 segundos
+      };
+
+        navigator.geolocation.getCurrentPosition(ubicacion => {
+          const latitud = ubicacion.coords.latitude;
+          const longitud = ubicacion.coords.longitude;
+
+          //Aquí hacemos la llamada al server para buscar los establecimientos
+          axios.post(process.env.VUE_APP_API_BASE_URL+"establecimientos/buscar-cercanos",
+              {
+                latitud: latitud,
+                longitud: longitud
+              })
+              .then(response => {
+                store.dispatch("establecimientos/buscarEstablecimientos", response.data);
+              })
+              .catch(error => {
+                console.log(error);
+              })
+        }, error => {
+          console.error( error );
+        }, opcionesDeSolicitud);
+      }
     }
 }
 </script>

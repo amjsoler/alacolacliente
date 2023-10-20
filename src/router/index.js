@@ -14,6 +14,7 @@ import RecordarContrasena from "@/views/user/RecordarContrasena.vue";
 import CrearEstablecimiento from "@/views/establecimientos/CrearEstablecimiento.vue";
 import globalHelpers from "@/helpers/globalHelpers.vue";
 import ModificarEstablecimiento from "@/views/establecimientos/ModificarEstablecimiento.vue";
+import VerificarCuenta from "@/views/user/VerificarCuenta.vue";
 
 //Las rutas de la aplicación
 const routes = [
@@ -94,6 +95,11 @@ const routes = [
         path: '/no-autorizado',
         name: 'AccionNoAutorizada',
         component: AccionNoAutorizada
+    },
+    {
+        path: '/verificar-cuenta',
+        name: 'VerificarCuenta',
+        component: VerificarCuenta
     },
 ]
 

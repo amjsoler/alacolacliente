@@ -68,6 +68,11 @@ axios.interceptors.response.use(response => {
             store.commit("almacenarMensaje", error.response.data.message);
         }
     }
+    else if(error.response.status == 418){
+        console.log("main.js: Response error captured 418. Cuenta no verificada, redirijo a la vista de verificación");
+
+        router.push({name:"VerificarCuenta"});
+    }
     //TODO: Manejar también los 404
 
     return Promise.reject(error)

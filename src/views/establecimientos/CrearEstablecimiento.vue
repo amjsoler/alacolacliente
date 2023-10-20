@@ -16,6 +16,10 @@
         <input-error v-if="errors.descripcion">{{errors.descripcion[0]}}</input-error>
       </form-group>
       <form-group>
+        <latitud-longitud-posicionamiento :posicionamiento_prop="posicionamiento"
+        @update:posicionamiento="value => this.posicionamiento = value"/>
+      </form-group>
+      <form-group>
         <form-label>Logo</form-label>
         <input-image-with-preview image-default="/no-logo.jpg" @logo-subido="elLogo => this.logo = elLogo"/>
         <input-error v-if="errors.logo">{{errors.logo[0]}}</input-error>
@@ -36,10 +40,13 @@ import InputError from "@/components/generales/formularios/InputError.vue";
 import InputControl from "@/components/generales/formularios/InputControl.vue";
 import TextAreaTinyMce from "@/components/generales/formularios/TextAreaTinyMce.vue";
 import InputImageWithPreview from "@/components/generales/formularios/InputImageWithPreview.vue";
+import LatitudLongitudPosicionamiento from "@/components/generales/formularios/LatitudLongitudPosicionamiento.vue";
 
 export default {
   name: "CrearEstablecimiento",
-  components: {InputImageWithPreview, TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
+  components: {
+    LatitudLongitudPosicionamiento,
+    InputImageWithPreview, TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
   data() {
     return {
       nombre: "",
@@ -47,8 +54,10 @@ export default {
       direccion: "",
       descripcion: "",
       geolocalizacionActiva: false,
-      latitud: "",
-      longitud: "",
+      posicionamiento: {
+        lat: "",
+        lng: "",
+      }
     }
   },
   computed: {
@@ -68,6 +77,8 @@ export default {
       formData.append("logo", this.logo);
       formData.append("direccion", this.direccion);
       formData.append("descripcion", this.descripcion);
+      formData.append("latitud", this.posicionamiento.lat);
+      formData.append("longitud", this.posicionamiento.lng);
       axios.post(process.env.VUE_APP_API_BASE_URL+"establecimientos",
           formData,
           {
