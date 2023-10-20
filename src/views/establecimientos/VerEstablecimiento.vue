@@ -133,7 +133,14 @@ export default {
     data() {
         return {
             establecimientoID: this.$route.params.id,
-            establecimiento: {},
+            establecimiento: {
+              nombre: "",
+              direccion: "",
+              descripcion: "",
+              logo: "",
+              latitud: "",
+              longitud: "",
+            },
             usuariosEncolados: [],
             establecimientoFavorito: null,
             usuarioEnCola: null,
@@ -270,7 +277,10 @@ export default {
           )
               .then(response => {
                 console.log("verEstablecimiento.vue: Respuesta OK. Almaceno el establecimiento en el local state");
+                console.log(response);
                 this.establecimiento = response.data.establecimiento;
+                this.establecimiento.latitud = parseFloat(response.data.establecimiento.latitud);
+                this.establecimiento.longitud = parseFloat(response.data.establecimiento.longitud);
                 this.usuariosEncolados = response.data.usuariosEncolados;
                 this.establecimientoFavorito = response.data.establecimientoFavorito;
                 this.usuarioEnCola = response.data.usuarioEnCola;

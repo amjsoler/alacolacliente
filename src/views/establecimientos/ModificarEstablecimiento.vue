@@ -16,6 +16,11 @@
         <input-error v-if="errors.descripcion">{{errors.descripcion[0]}}</input-error>
       </form-group>
       <form-group>
+        <latitud-longitud-posicionamiento :posicionamiento_prop="establecimiento.posicionamiento"
+                                          @update:posicionamiento="value => establecimiento.posicionamiento = value"
+                                          default-active="true"/>
+      </form-group>
+      <form-group>
         <form-label>Logo</form-label>
         <input-image-with-preview :image-default="dameRutaAbsolutaLogo" @logo-subido="elLogo => this.establecimiento.logo = elLogo"/>
         <input-error v-if="errors.logo">{{errors.logo[0]}}</input-error>
@@ -36,17 +41,24 @@ import InputError from "@/components/generales/formularios/InputError.vue";
 import InputControl from "@/components/generales/formularios/InputControl.vue";
 import TextAreaTinyMce from "@/components/generales/formularios/TextAreaTinyMce.vue";
 import InputImageWithPreview from "@/components/generales/formularios/InputImageWithPreview.vue";
+import LatitudLongitudPosicionamiento from "@/components/generales/formularios/LatitudLongitudPosicionamiento.vue";
 
 export default {
   name: "ModificarEstablecimiento",
-  components: {InputImageWithPreview, TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
+  components: {
+    LatitudLongitudPosicionamiento,
+    InputImageWithPreview, TextAreaTinyMce, InputControl, InputError, FormLabel, FormGroup},
   data() {
     return {
       establecimiento: {
         nombre: "",
         direccion: "",
         descripcion: "",
-        logo: null
+        logo: null,
+        posicionamiento: {
+          lat: "",
+          lng: ""
+        }
       }
     }
   },
@@ -65,7 +77,8 @@ export default {
     this.establecimiento.nombre = this.establecimientoAModificar.nombre;
     this.establecimiento.direccion = this.establecimientoAModificar.direccion;
     this.establecimiento.descripcion = this.establecimientoAModificar.descripcion;
-
+    this.establecimiento.posicionamiento.lat = this.establecimientoAModificar.latitud;
+    this.establecimiento.posicionamiento.lng = this.establecimientoAModificar.longitud;
   },
   methods: {
     ...mapActions({
@@ -79,7 +92,9 @@ export default {
             nombre: this.establecimiento.nombre,
             direccion: this.establecimiento.direccion,
             descripcion: this.establecimiento.descripcion,
-            logo: this.establecimiento.logo
+            logo: this.establecimiento.logo,
+            latitud: this.establecimiento.posicionamiento.lat,
+            longitud: this.establecimiento.posicionamiento.lng,
           },
           {
             headers: {

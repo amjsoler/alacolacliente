@@ -74,7 +74,9 @@ export default {
       console.log("El logo: " + this.logo);
       const formData = new FormData();
       formData.append("nombre", this.nombre);
-      formData.append("logo", this.logo);
+      if(this.logo){
+        formData.append("logo", this.logo);
+      }
       formData.append("direccion", this.direccion);
       formData.append("descripcion", this.descripcion);
       formData.append("latitud", this.posicionamiento.lat);

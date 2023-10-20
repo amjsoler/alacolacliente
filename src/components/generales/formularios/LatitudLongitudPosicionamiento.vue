@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-check form-switch align-items-center d-flex">
-      <input @click="incluirPosicionamientoPulsado" class="form-check-input me-3" type="checkbox" role="switch" id="checkposicionamiento">
+      <input @click="incluirPosicionamientoPulsado" class="form-check-input me-3" type="checkbox" :checked="defaultActive" role="switch" id="checkposicionamiento">
       <label class="form-check-label" for="flexSwitchCheckDefault">Incluir posicionamiento del establecimiento</label>
     </div>
     <GoogleMap
@@ -9,8 +9,7 @@
         api-key="AIzaSyC2lM3wQfB-uMKK-EZgH9zO60oc_4LciO4"
         style="width: 100%; height: 500px"
         :center="center"
-        :zoom="15"
-    >
+        :zoom="15">
       <Marker :options="{ position: center, draggable: true }" @dragend="data => markDragged(data)" />
     </GoogleMap>
   </div>
@@ -20,15 +19,12 @@
 import {GoogleMap, Marker} from "vue3-google-map";
 
 export default {
-  props: ["posicionamiento_prop"],
+  props: ["posicionamiento_prop", "defaultActive"],
   emits: ["update:posicionamiento"],
   components: { GoogleMap, Marker },
   data() {
     return {
-      center: {
-        lat: this.posicionamiento_prop.lat,
-        lng: this.posicionamiento_prop.lng,
-      },
+      center: this.posicionamiento_prop
     }
   },
   methods: {
