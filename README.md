@@ -1,6 +1,6 @@
 # ALaCola 
 
-Es un proyecto llevado a cabo con la idea de digitalizar la cola de clientes de numerosos comercios. De este modo, no hay que invertir tiempo en dicha gestión. Además, los usuarios podrán reservar sus turnos de forma telemática.
+Es un proyecto llevado a cabo con la idea de digitalizar la cola de clientes de numerosos comercios. De este modo, no hay que invertir tiempo en dicha gestión. Además, los usuarios podrán programar su turno en una fecha/hora determinadas.
 
 ##Tecnologías
 
